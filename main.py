@@ -2,8 +2,6 @@
 # Peyton Meitler
 # Mini Project 2
 
-#(20/20 points) There should be a README.md file in your project that explains what your project is, how to install the pip requirements, and how to execute the program. Please use the GitHub flavor of Markdown. Be thorough on the explanations.
-
 import yfinance as yf
 import matplotlib.pyplot as plt
 import numpy as np
