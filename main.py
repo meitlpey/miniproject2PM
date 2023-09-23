@@ -2,45 +2,59 @@
 # Peyton Meitler
 # Mini Project 2
 
-#(10/10 points) Save these graphs in a folder called charts as PNG files. Do not upload these to your project folder, the project should save these when it executes. You may want to add this folder to your .gitignore file.
-#(10/10 points) There should be a minimum of 5 commits on your project, be sure to commit often!
-#(10/10 points) I will be checking out the master branch of your project. Please be sure to include a requirements.txt file which contains all the packages that need installed. You can create this fille with the output of pip freeze at the terminal prompt.
 #(20/20 points) There should be a README.md file in your project that explains what your project is, how to install the pip requirements, and how to execute the program. Please use the GitHub flavor of Markdown. Be thorough on the explanations.
 
 import yfinance as yf
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats
+from pathlib import Path
 
-# gets information on whatever stock you enter
-stock = yf.Ticker("AAPL")
-hist = stock.history(period="365d") # get historical market data from the past year
+# List of stock tickers
+stock_tickers = ["AAPL", "MSFT", "GOOGL", "AMZN"]
 
-# Extract the date and closing price
-dates = hist.index
-closing_prices = hist['Close']
+# Makes the code run multiple times for multiple stocks
+for ticker in stock_tickers:
+    # Fetch stock data
+    stock = yf.Ticker(ticker)
+    hist = stock.history(period="365d") # get historical market data from the past year
 
-# Calculate the trend line
-x = np.arange(len(dates))
-slope, intercept, r_value, p_value, std_err = stats.linregress(x, closing_prices)
-trend_line = slope * x + intercept
+    # get the date and closing price
+    dates = hist.index
+    closing_prices = hist['Close']
 
-# Determine the color of the trend line based on its slope
-trend_line_color = 'green' if slope > 0 else 'red'
+    # Makes the trend line
+    x = np.arange(len(dates))
+    slope, intercept, r_value, p_value, std_err = stats.linregress(x, closing_prices)
+    trend_line = slope * x + intercept
 
-# Plot the closing price and trend line
-plt.figure(figsize=(10, 6))
-plt.title("Closing Price for Microsoft (MSFT) with Trend Line")
-plt.ylabel("Closing Price")
-plt.xlabel("Date")
+    # Makes the trendline color red or green based on if its positive or not
+    trend_line_color = 'green' if slope > 0 else 'red'
 
-plt.plot(dates, closing_prices, label="Closing Price", color='blue')
-plt.plot(dates, trend_line, label="Trend Line", color=trend_line_color, linestyle='-')
+    # Plots all the stuff and adds labels for x and y axis along with a title
+    plt.figure(figsize=(10, 6))
+    plt.title(f"Closing Price for {ticker} with Trend Line")
+    plt.ylabel("Closing Price")
+    plt.xlabel("Date")
 
-plt.legend()
-plt.grid(True)
+    # Makes the legend for the graphs
+    plt.plot(dates, closing_prices, label="Closing Price", color='blue')
+    plt.plot(dates, trend_line, label="Trend Line", color=trend_line_color, linestyle='-')
 
-plt.show()
+    # Creates our charts folder
+    try:
+        # Create charts File
+        Path("charts").mkdir()
+    except FileExistsError:
+        pass
+    # Saves the yearly stock graphs to the charts folder
+    savefile = f"charts/{ticker}.png"
+    plt.savefig(savefile)
+
+    plt.legend()
+    plt.grid(True)
+
+    plt.show()
 
 
 
