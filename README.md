@@ -13,3 +13,6 @@ please run the following
 ```
 pip install -r requirments.txt
 ```
+```
+Run python main.py
+```

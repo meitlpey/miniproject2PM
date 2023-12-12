@@ -9,7 +9,7 @@ from scipy import stats
 from pathlib import Path
 
 # List of stock tickers
-stock_tickers = ["AAPL", "MSFT", "GOOGL", "AMZN"]
+stock_tickers = ["CVNA", "AMD", "ATVI", "GME", "SONY", "AAPL"]
 
 # Makes the code run multiple times for multiple stocks
 for ticker in stock_tickers:
